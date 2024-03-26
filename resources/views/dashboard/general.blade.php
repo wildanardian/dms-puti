@@ -6,7 +6,8 @@
         <div class="row">
             <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                 <h4>Input Text</h4>
-            </div>                 
+                <h1>{{ Auth::user()->hasRole('superadmin') ? 'superadmin' : 'not superadmin' }}</h1>
+            </div>
         </div>
     </div>
     <div class="widget-content widget-content-area">
@@ -21,7 +22,7 @@
                         <input type="submit" name="txt" class="mt-4 btn btn-primary">
                     </div>
                 </form>
-            </div>                                        
+            </div>
         </div>
 
     </div>
