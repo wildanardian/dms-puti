@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     public function unit()
     {
-        return $this->hasOne(Unit::class, 'user_unit', 'user_id', 'unit_id');
+        return $this->belongsTo(Unit::class, 'user_unit', 'user_id', 'unit_id');
     }
 
 }

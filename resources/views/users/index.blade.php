@@ -23,7 +23,7 @@
                                     aria-label="Name: activate to sort column descending" style="width:15px">No</th>
                                 <th class="sorting_asc" tabindex="0" aria-controls="table" rowspan="1" colspan="1"
                                     aria-sort="ascending" aria-label="Name: activate to sort column descending"
-                                    style="width: 129px;">Nama
+                                    style="width: 100px;">Nama
                                 </th>
                                 <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1"
                                     aria-label="Position: activate to sort column ascending" style="width: 220px;">Unit
@@ -109,8 +109,14 @@
                         searchable: false,
                         render: function(data, type, row, meta) {
                             return `
-                                <a href="{{ route('users.index') }}/${data}/edit" class="btn btn-warning btn-sm">Ubah</a>
-                                <a class="btn btn-danger btn-sm" onclick="deleteData(${data})">Hapus</a>
+                                <div class="d-flex gap-2 align-items-center justify-content-center">
+                                    <a href="{{ route('users.index') }}/${data}/edit" class="btn btn-warning btn-sm">Ubah</a>
+                                    <form action="{{ route('users.destroy', ':user') }}/" method="POST" id="delete_form_${data}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <a class="btn btn-danger btn-sm" onclick="deleteData(${data})">Hapus</a>
+                                    </form>
+                                </div>
                             `;
                         }
                     }
@@ -127,26 +133,20 @@
         });
 
         function deleteData(id) {
+            var form = $('#delete_form_' + id);
+            var action = form.attr('action');
+            action = action.replace(':user', id);
+            form.attr('action', action);
+
             Swal.fire({
                 title: "Apakah anda yakin?",
                 text: "Setelah dihapus, Anda tidak akan dapat memulihkan data tersebut!",
                 icon: "warning",
-                buttons: true,
                 showCancelButton: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete.isConfirmed) {
-                    $.ajax({
-                        url: "{{ route('users.destroy', ':user') }}/".replace(':user', id),
-                        type: "POST",
-                        data: {
-                            '_method': 'DELETE',
-                            '_token': "{{ csrf_token() }}"
-                        },
-                        success: function(data) {
-                            $('#table').DataTable().ajax.reload();
-                        }
-                    });
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    form.submit();
+                    $('#table').DataTable().ajax.reload();
                 }
             });
         }

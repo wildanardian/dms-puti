@@ -23,7 +23,7 @@
             </div>
             <form
                 action="{{ Route::currentRouteName() == 'users.create' ? route('users.store') : route('users.update', $user->id) }}"
-                method="POST" id="form-submit">
+                method="POST" id="form-submit" enctype="multipart/form-data">
                 @csrf
                 @if (Route::currentRouteName() == 'users.edit')
                     @method('PUT')
@@ -113,7 +113,7 @@
                             <label for="select-unit">
                                 Unit
                             </label>
-                            <select id="select-unit" name="select-unit" placeholder="Pilih Unit" autocomplete="off">
+                            <select id="select-unit" name="select_unit" placeholder="Pilih Unit" autocomplete="off">
                                 <option value="">Pilih Unit</option>
                                 @foreach ($unit as $index => $u)
                                     <option value="{{ $index + 1 }}">{{ $u }}</option>
@@ -126,30 +126,32 @@
                             <label for="select-user">
                                 Tipe User
                             </label>
-                            <select id="select-user" name="select-user" placeholder="Pilih Tipe User"
+                            <select id="select-user" name="select_user" placeholder="Pilih Tipe User"
                                 autocomplete="off">
                                 <option value="">Pilih Tipe User</option>
                                 @foreach ($user_type as $index => $u)
                                     @php
                                         $formatUserType = ucwords(str_replace('-', ' ', $u));
                                     @endphp
-                                    <option value="{{ $u }}">{{ $formatUserType }}</option>
+                                    <option value="{{ $u }}" @if (isset($user) && $user->user_type == $u) selected @endif>
+                                        {{ $formatUserType }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="row mt-4">
-                    <div class="col-md-6 col-12">
+                    <div class="col-md-12 col-12">
                         <div class="form-group">
-                            <label for="filepond">
+                            <label for="signature">
                                 Upload Tanda Tangan
                                 <span class="text-danger">*</span>
                             </label>
-                            <div class="multiple-file-upload">
-                                <input type="file" class="filepond file-upload-multiple" name="filepond" multiple
-                                    data-allow-reorder="true" data-max-file-size="3MB" data-max-files="3">
-                            </div>
+                            <input type="file" class="dropify" data-max-file-size="2M" name="signature"
+                                data-height="75" />
+                            @error('signature')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
 
                         </div>
                     </div>
@@ -159,14 +161,6 @@
         </div>
     </div>
 @endsection
-
-@push('style')
-    <style>
-        .filepond-root .filepond-hopper {
-            border-radius: 5px !important;
-        }
-    </style>
-@endpush
 
 @push('script')
     <script>
@@ -184,17 +178,13 @@
             create: true,
         });
 
-        FilePond.registerPlugin(
-            FilePondPluginImagePreview,
-            FilePondPluginImageExifOrientation,
-            FilePondPluginFileValidateSize,
-            // FilePondPluginImageEdit
-        );
-
-        // Select the file input and use
-        // create() to turn it into a pond
-        FilePond.create(
-            document.querySelector('.file-upload-multiple')
-        );
+        var drEvent = $('.dropify').dropify({
+            messages: {
+                'default': 'Drag and drop a file here or click',
+                'replace': 'Drag and drop or click to replace',
+                'remove': 'Remove',
+                'error': 'Ooops, something wrong happended.'
+            }
+        });
     </script>
 @endpush

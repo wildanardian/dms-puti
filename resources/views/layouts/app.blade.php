@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>Test</title>
+    <title>NEW PUTI DMS</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('src/assets/img/favicon.ico') }}" />
-    <link href="{{ asset('layouts/modern-light-menu/css/light/loader.css') }}" rel="stylesheet" type="text/css" />
-    <script src="{{ asset('layouts/modern-light-menu/loader.js') }}"></script>
+    <link href="{{ asset('modern-light-menu/css/light/loader.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ asset('modern-light-menu/loader.js') }}"></script>
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
@@ -19,15 +19,23 @@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     <link href="{{ asset('src/assets/css/light/elements/alert.css') }}" rel="stylesheet" type="text/css" >
 
+    <!-- Tom Select-->
     <link href="{{ asset('src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet" type="text/css" rel="stylesheet">
 
+    <!-- Scroll Spy Nav-->
     <link href="{{ asset('src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
+
+    <!-- Data Table -->
     <link href="{{ asset('src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet" type="text/css" >
-    <link href="{{ asset('src/plugins/css/light/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
 
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <!-- Sweet Alert -->
+    <link href="{{ asset('src/plugins/src/sweetalerts2/sweetalerts2.css') }}" rel="stylesheet" type="text/css" />
+
+    <!-- Dropify -->
+    <link href="{{ asset('src/assets/css/dropify/dropify.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/assets/css/dropify/dropify.min.css') }}" rel="stylesheet">
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 
     @stack('style')
@@ -42,6 +50,10 @@
 </head>
 
 <body class="layout-boxed" page="starter-pack">
+
+    <div id="load_screen"> <div class="loader"> <div class="loader-content">
+        <div class="spinner-grow align-self-center"></div>
+    </div></div></div>
 
     @include('layouts.navbar')
 
@@ -112,7 +124,8 @@
     <script src="{{ asset('src/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('src/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
 
-    <script src="{{ asset('layouts/modern-light-menu/app.js') }}"></script>
+    <script src="{{ asset('modern-light-menu/app.js') }}"></script>
+    <script src="{{ asset('src/plugins/src/waves/waves.min.js') }}"></script>
 
     <script src="{{ asset('src/assets/js/custom.js') }}"></script>
     <script src="{{ asset('src/assets/js/dashboard/dash_1.js') }}"></script>
@@ -122,10 +135,12 @@
     <script src="{{ asset('src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
     <script src="{{ asset('src/plugins/src/tomSelect/custom-tom-select.js') }}"></script>
 
+    <script src="{{ asset('src/assets/js/dropify/dropify.js') }}"></script>
+    <script src="{{ asset('src/assets/js/dropify/dropify.min.js') }}"></script>
+
     <script src="{{ asset('src/assets/js/scrollspyNav.js') }}"></script>
-    <script src="{{ asset('src/plugins/src/sweetalerts2/sweetalerts2.min.js') }}"></script>
+    <script src="{{ asset('src/plugins/src/sweetalerts2/sweetalerts2.min.js') }}"></scrip>
     <script src="{{ asset('src/plugins/src/sweetalerts2/custom-sweetalert.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="{{ mix('js/app.js') }}"></script>
     @stack('script')

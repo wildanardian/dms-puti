@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\UserUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -23,6 +24,7 @@ class UserController extends Controller
                 ->leftJoin('user_unit', 'users.id', '=', 'user_unit.user_id')
                 ->leftJoin('units', 'user_unit.unit_id', '=', 'units.id')
                 ->select('users.id', 'users.name', 'units.name as unit', 'users.created_at')
+                ->whereNull('users.deleted_at')
                 ->get();
 
             return DataTables::of($users)->addIndexColumn()->make(true);
@@ -51,7 +53,8 @@ class UserController extends Controller
             'username' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            'confirm-password' => 'required|same:password'
+            'confirm-password' => 'required|same:password',
+            'signature' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -65,14 +68,34 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $role = Role::where('name', $request->select_role)->first();
-        $user->assignRole($role);
-        $user->unit()->attach($request->select_unit);
+        if ($request->hasFile('signature')) {
+            $signature = $request->file('signature');
+            $signature_name = time() . '.' . $signature->getClientOriginalExtension();
+            $signature->move(public_path('images/signatures'), $signature_name);
+            $user->signature = $signature_name;
+            $user->save();
+        }
+
+        if ($request->select_user != null) {
+            $role = Role::where('name', $request->select_user)->first();
+            $user->assignRole($role);
+        }
+
+        if ($request->select_unit != null) {
+            $unit = Unit::where('id', $request->select_unit)->first();
+
+            UserUnit::create([
+                'user_id' => $user->id,
+                'unit_id' => $unit->id,
+            ]);
+        }
 
         if ($user) {
-            return redirect()->route('users.index')->with('success', 'User created successfully');
+            toastr()->success('User created successfully.');
+            return redirect()->route('users.index');
         } else {
-            return back()->withInput()->with('error', 'Failed to create user');
+            toastr()->error('Failed to create user.');
+            return back()->withInput();
         }
     }
 
@@ -90,18 +113,8 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::findOrFail($id);
-
-        $unit = [
-            'Direktorat Pusat Teknologi Informasi', 'Bagian Riset dan Layanan TI',
-            'Urusan Manajemen Mutu', 'Urusan Pengelolaan Konten dan Sumber Daya TI',
-            'Urusan Pengguna Layanan', 'Urusan Riset TI', 'Bagian Infrastruktur TI',
-            'Urusan Infrastruktur Jaringan TI'
-        ];
-
-        $user_type = [
-            'Super Admin', 'Direktorat', 'Bagian', 'Urusan', 'Urusan Cosmos', 'Urusan Aplikasi'
-        ];
-
+        $unit = Unit::all()->pluck('name');
+        $user_type = Role::all()->pluck('name');
         return view('users.form', compact('user', 'unit', 'user_type'));
     }
 
@@ -125,11 +138,36 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->username = $request->username;
         $user->email = $request->email;
+        $user->updated_at = now();
+
+        if ($request->hasFile('signature')) {
+            $signature = $request->file('signature');
+            $signature_name = time() . '.' . $signature->getClientOriginalExtension();
+            $signature->move(public_path('images/signatures'), $signature_name);
+            $user->signature = $signature_name;
+            $user->save();
+        }
+
+        if ($request->select_user != null) {
+            $role = Role::where('name', $request->select_user)->first();
+            $user->assignRole($role);
+        }
+
+        if ($request->select_unit != null) {
+            $unit = Unit::where('id', $request->select_unit)->first();
+
+            UserUnit::create([
+                'user_id' => $user->id,
+                'unit_id' => $unit->id,
+            ]);
+        }
 
         if ($user->save()) {
-            return redirect()->route('users.index')->with('success', 'User updated successfully');
+            toastr()->success('User updated successfully.');
+            return redirect()->route('users.index');
         } else {
-            return back()->withInput()->with('error', 'Failed to update user');
+            toastr()->error('Failed to update user.');
+            return back()->withInput();
         }
     }
 
@@ -141,9 +179,11 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($user->delete()) {
-            return redirect()->route('users.index')->with('success', 'User deleted successfully');
+            toastr()->success('User deleted successfully.');
+            return redirect()->back();
         } else {
-            return back()->with('error', 'Failed to delete user');
+            toastr()->error('Failed to delete user.');
+            return back();
         }
     }
 }
