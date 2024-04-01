@@ -14,7 +14,7 @@ class UnitController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $units = Unit::all();
+            $units = Unit::all()->whereNull('deleted_at');
             return DataTables::of($units)->addIndexColumn()->make(true);
         }
         return view('units.index');
@@ -25,7 +25,7 @@ class UnitController extends Controller
      */
     public function create()
     {
-        //
+        return view('units.form');
     }
 
     /**
@@ -33,7 +33,19 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+        ]);
+
+        $unit = Unit::create($request->all());
+
+        if($unit) {
+            toastr()->success('Unit created successfully.');
+            return redirect()->route('units.index');
+        }else {
+            toastr()->error('Failed to create unit.');
+            return back()->withInput();
+        }
     }
 
     /**
@@ -41,7 +53,7 @@ class UnitController extends Controller
      */
     public function show(Unit $unit)
     {
-        //
+
     }
 
     /**
@@ -49,7 +61,8 @@ class UnitController extends Controller
      */
     public function edit(Unit $unit)
     {
-        //
+        $unit = Unit::find($unit->id);
+        return view('units.form', compact('unit'));
     }
 
     /**
@@ -57,7 +70,21 @@ class UnitController extends Controller
      */
     public function update(Request $request, Unit $unit)
     {
-        //
+        $unit = Unit::find($unit->id);
+
+        $request->validate([
+            'name' => 'required',
+        ]);
+
+        $unit->name = $request->name;
+
+        if($unit->save()){
+            toastr()->success('Unit updated successfully.');
+            return redirect()->route('units.index');
+        }else {
+            toastr()->error('Failed to update unit.');
+            return back()->withInput();
+        }
     }
 
     /**
@@ -65,6 +92,15 @@ class UnitController extends Controller
      */
     public function destroy(Unit $unit)
     {
-        //
+        $unit = Unit::find($unit->id);
+        $unit->delete();
+
+        if($unit) {
+            toastr()->success('Unit deleted successfully.');
+            return redirect()->back();
+        } else {
+            toastr()->error('Failed to delete unit.');
+            return back();
+        }
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('button')
-    <a href="{{ route('users.create') }}" class="btn btn-danger">
+    <a href="{{ route('units.create') }}" class="btn btn-danger">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
             <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -16,7 +16,7 @@
         <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
             <div class="widget-content widget-content-area br-8">
                 <div class="table-responsive">
-                    <table id="table" class="table dt-table-hover dataTable no-footer" style="width: 100%">
+                    <table id="table_unit" class="table dt-table-hover dataTable no-footer" style="width: 100%">
                         <thead>
                             <tr role="row">
                                 <th class="text-center" tabindex="0" aria-controls="table" rowspan="1" colspan="1"
@@ -24,9 +24,6 @@
                                 <th class="sorting_asc" tabindex="0" aria-controls="table" rowspan="1" colspan="1"
                                     aria-sort="ascending" aria-label="Name: activate to sort column descending"
                                     style="width: 129px;">Nama
-                                </th>
-                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1"
-                                    aria-label="Position: activate to sort column ascending" style="width: 220px;">Unit
                                 </th>
                                 <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1"
                                     aria-label="Position: activate to sort column ascending" style="width: 125px;">Tanggal
@@ -51,7 +48,7 @@
 @push('script')
     <script>
         $(document).ready(function() {
-            $('#table').DataTable({
+            $('#table_unit').DataTable({
                 "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
                     "<'table-responsive'tr>" +
                     "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
@@ -67,7 +64,7 @@
                 },
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('users.index') }}",
+                ajax: "{{ route('units.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -78,10 +75,6 @@
                     {
                         data: 'name',
                         name: 'name'
-                    },
-                    {
-                        data: 'email',
-                        name: 'email'
                     },
                     {
                         data: 'created_at',
@@ -109,8 +102,14 @@
                         searchable: false,
                         render: function(data, type, row, meta) {
                             return `
-                                <a href="{{ route('users.index') }}/${data}/edit" class="btn btn-warning btn-sm">Ubah</a>
-                                <a class="btn btn-danger btn-sm" onclick="deleteData(${data})">Hapus</a>
+                                <div class="d-flex gap-2 align-items-center justify-content-center">
+                                    <a href="{{ route('units.index') }}/${data}/edit" class="btn btn-warning btn-sm">Ubah</a>
+                                    <form action="{{ route('units.destroy', ':unit') }}/" method="POST" id="delete_form_${data}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <a class="btn btn-danger btn-sm" onclick="deleteData(${data})">Hapus</a>
+                                    </form>
+                                </div>
                             `;
                         }
                     }
@@ -127,26 +126,20 @@
         });
 
         function deleteData(id) {
+            var form = $('#delete_form_' + id);
+            var action = form.attr('action');
+            action = action.replace(':unit', id);
+            form.attr('action', action);
+
             Swal.fire({
                 title: "Apakah anda yakin?",
                 text: "Setelah dihapus, Anda tidak akan dapat memulihkan data tersebut!",
                 icon: "warning",
-                buttons: true,
                 showCancelButton: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete.isConfirmed) {
-                    $.ajax({
-                        url: "{{ route('users.destroy', ':user') }}/".replace(':user', id),
-                        type: "POST",
-                        data: {
-                            '_method': 'DELETE',
-                            '_token': "{{ csrf_token() }}"
-                        },
-                        success: function(data) {
-                            $('#table').DataTable().ajax.reload();
-                        }
-                    });
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                    $('#table_unit').DataTable().ajax.reload();
                 }
             });
         }
