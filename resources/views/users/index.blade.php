@@ -1,7 +1,14 @@
 @extends('layouts.app')
 
+@section('breadcrumb')
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Settings</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Kelola User</li>
+    </ol>
+@endsection
+
 @section('button')
-    <a href="{{ route('users.create') }}" class="btn btn-danger">
+    <a href="{{ route('users.create') }}" class="btn btn-sm btn-danger">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
             <line x1="12" y1="5" x2="12" y2="19"></line>

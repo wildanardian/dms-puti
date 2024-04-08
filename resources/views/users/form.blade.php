@@ -35,7 +35,7 @@
                                 Name
                                 <span class="text-danger">*</span>
                             </label>
-                            <input id="t-text" type="text" name="name" placeholder="Budi"
+                            <input id="t-text" type="text" name="name" placeholder="Nama pengguna"
                                 class="form-control form-control-sm" required=""
                                 value="{{ isset($user) ? $user->name : old('name') }}">
                             @error('name')
@@ -49,7 +49,7 @@
                                 Username
                                 <span class="text-danger">*</span>
                             </label>
-                            <input id="t-text" type="username" name="username" placeholder="budi"
+                            <input id="t-text" type="username" name="username" placeholder="Username yang digunakan"
                                 class="form-control form-control-sm" required=""
                                 value="{{ isset($user) ? $user->username : old('username') }}">
                             @error('username')
@@ -63,7 +63,7 @@
                                 Email
                                 <span class="text-danger">*</span>
                             </label>
-                            <input id="t-text" type="email" name="email" placeholder="budi@gmail.com"
+                            <input id="t-text" type="email" name="email" placeholder="Masukan email, ex: budi@gmail.com"
                                 class="form-control form-control-sm" required=""
                                 value="{{ isset($user) ? $user->email : old('email') }}">
                             @error('email')
@@ -80,7 +80,7 @@
                                     Password
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input id="t-text" type="password" name="password" placeholder="****"
+                                <input id="t-text" type="password" name="password" placeholder="Masukkan Password"
                                     class="form-control form-control-sm" required="">
                                 @error('password')
                                     <div class="text-danger">{{ $message }}</div>
@@ -93,7 +93,7 @@
                                     Password Confirmation
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input id="t-text" type="password" name="confirm-password" placeholder="****"
+                                <input id="t-text" type="password" name="confirm-password" placeholder="Konfirmasi Password"
                                     class="form-control form-control-sm" required="">
                                 @error('confirm-password')
                                     <div class="text-danger">{{ $message }}</div>

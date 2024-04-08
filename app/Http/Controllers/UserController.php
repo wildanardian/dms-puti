@@ -21,8 +21,7 @@ class UserController extends Controller
     {
         if ($request->ajax()) {
             $users = DB::table('users')
-                ->leftJoin('user_unit', 'users.id', '=', 'user_unit.user_id')
-                ->leftJoin('units', 'user_unit.unit_id', '=', 'units.id')
+                ->leftJoin('units', 'users.unit_id', '=', 'units.id')
                 ->select('users.id', 'users.name', 'units.name as unit', 'users.created_at')
                 ->whereNull('users.deleted_at')
                 ->get();
