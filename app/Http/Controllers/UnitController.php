@@ -14,7 +14,7 @@ class UnitController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $units = Unit::all()->whereNull('deleted_at');
+            $units = Unit::select('*');
             return DataTables::of($units)->addIndexColumn()->make(true);
         }
         return view('units.index');

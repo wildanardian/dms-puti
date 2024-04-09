@@ -23,8 +23,7 @@ class UserController extends Controller
             $users = DB::table('users')
                 ->leftJoin('units', 'users.unit_id', '=', 'units.id')
                 ->select('users.id', 'users.name', 'units.name as unit', 'users.created_at')
-                ->whereNull('users.deleted_at')
-                ->get();
+                ->whereNull('users.deleted_at');
 
             return DataTables::of($users)->addIndexColumn()->make(true);
         }
