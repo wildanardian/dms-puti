@@ -12,10 +12,11 @@ class Unit extends Model
 
     protected $fillable = [
         'name',
+        'parent_id'
     ];
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_unit', 'unit_id', 'user_id');
+        return $this->hasMany(User::class);
     }
 }

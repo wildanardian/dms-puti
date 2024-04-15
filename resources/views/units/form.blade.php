@@ -2,13 +2,7 @@
 
 @section('button')
     <button class="btn btn-danger" type="submit" id="btn-submit">
-        <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="feather feather-save">
-            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-            <polyline points="17 21 17 13 7 13 7 21"></polyline>
-            <polyline points="7 3 7 8 15 8"></polyline>
-        </svg>
+        <i data-feather="save" class="me-2"></i>
         <span>Simpan</span>
     </button>
 @endsection
@@ -29,7 +23,7 @@
                     @method('PUT')
                 @endif
                 <div class="row">
-                    <div class="col-lg-12 col-12 ">
+                    <div class="col-lg-6 col-12 ">
                         <div class="form-group">
                             <label for="t-text" class="form-label">
                                 Name
@@ -43,6 +37,24 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="col-lg-6 col-12 ">
+                        <div class="form-group">
+                            <label for="t-text" class="form-label">
+                                Parent Unit
+                            </label>
+                            <select id="select-unit" name="select_parent_unit" placeholder="Pilih Unit" autocomplete="off"
+                                class="form-control form-control-sm">
+                                <option value="">Pilih Unit</option>
+                                @foreach ($units as $item)
+                                    <option value="{{ $item->id }}" @if (isset($unit) && $unit->parent_id == $item->id) selected @endif>
+                                        {{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('select_parent_unit')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
                 <input id="submit-form" type="submit" hidden>
             </form>
@@ -52,6 +64,7 @@
 
 @push('script')
     <script>
+        feather.replace();
         var form = document.getElementById('form-submit');
         var button = document.getElementById('btn-submit');
         button.addEventListener('click', function(event) {

@@ -14,7 +14,7 @@ class UnitController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $units = Unit::select('*');
+            $units = Unit::select('*')->orderBy('parent_id');
             return DataTables::of($units)->addIndexColumn()->make(true);
         }
         return view('units.index');
@@ -25,7 +25,8 @@ class UnitController extends Controller
      */
     public function create()
     {
-        return view('units.form');
+        $units = Unit::all();
+        return view('units.form', compact('units'));
     }
 
     /**
@@ -37,7 +38,10 @@ class UnitController extends Controller
             'name' => 'required',
         ]);
 
-        $unit = Unit::create($request->all());
+        $unit = Unit::create([
+            'name' => $request->name,
+            'parent_id' => $request->select_parent_unit
+        ]);
 
         if($unit) {
             toastr()->success('Unit created successfully.');
@@ -62,7 +66,9 @@ class UnitController extends Controller
     public function edit(Unit $unit)
     {
         $unit = Unit::find($unit->id);
-        return view('units.form', compact('unit'));
+        $units = Unit::where('id', '!=', $unit->id)->get();
+
+        return view('units.form', compact('unit', 'units'));
     }
 
     /**
@@ -77,6 +83,7 @@ class UnitController extends Controller
         ]);
 
         $unit->name = $request->name;
+        $unit->parent_id = $request->select_parent_unit;
 
         if($unit->save()){
             toastr()->success('Unit updated successfully.');

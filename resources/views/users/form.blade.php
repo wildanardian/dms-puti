@@ -1,14 +1,18 @@
 @extends('layouts.app')
 
+@push('style')
+    <!-- Dropify -->
+    <link href="{{ asset('src/assets/css/dropify/dropify.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/assets/css/dropify/dropify.min.css') }}" rel="stylesheet">
+
+    <!-- Tom Select-->
+    <link href="{{ asset('src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet" type="text/css">
+@endpush
+
 @section('button')
     <button class="btn btn-danger" type="submit" id="btn-submit">
-        <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="feather feather-save">
-            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-            <polyline points="17 21 17 13 7 13 7 21"></polyline>
-            <polyline points="7 3 7 8 15 8"></polyline>
-        </svg>
+        <i data-feather="save" class="me-2"></i>
         <span>Simpan</span>
     </button>
 @endsection
@@ -35,7 +39,7 @@
                                 Name
                                 <span class="text-danger">*</span>
                             </label>
-                            <input id="t-text" type="text" name="name" placeholder="Nama pengguna"
+                            <input type="text" name="name" id="name" placeholder="Nama pengguna"
                                 class="form-control form-control-sm" required=""
                                 value="{{ isset($user) ? $user->name : old('name') }}">
                             @error('name')
@@ -49,7 +53,7 @@
                                 Username
                                 <span class="text-danger">*</span>
                             </label>
-                            <input id="t-text" type="username" name="username" placeholder="Username yang digunakan"
+                            <input type="text" name="username" id="username" placeholder="Username yang digunakan"
                                 class="form-control form-control-sm" required=""
                                 value="{{ isset($user) ? $user->username : old('username') }}">
                             @error('username')
@@ -63,9 +67,9 @@
                                 Email
                                 <span class="text-danger">*</span>
                             </label>
-                            <input id="t-text" type="email" name="email" placeholder="Masukan email, ex: budi@gmail.com"
-                                class="form-control form-control-sm" required=""
-                                value="{{ isset($user) ? $user->email : old('email') }}">
+                            <input type="email" name="email" id="email"
+                                placeholder="Masukan email, ex: budi@gmail.com" class="form-control form-control-sm"
+                                required="" value="{{ isset($user) ? $user->email : old('email') }}">
                             @error('email')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -80,7 +84,7 @@
                                     Password
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input id="t-text" type="password" name="password" placeholder="Masukkan Password"
+                                <input type="password" name="password" id="password" placeholder="Masukkan Password"
                                     class="form-control form-control-sm" required="">
                                 @error('password')
                                     <div class="text-danger">{{ $message }}</div>
@@ -93,8 +97,8 @@
                                     Password Confirmation
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input id="t-text" type="password" name="confirm-password" placeholder="Konfirmasi Password"
-                                    class="form-control form-control-sm" required="">
+                                <input type="password" name="confirm-password" id="confirm-password"
+                                    placeholder="Konfirmasi Password" class="form-control form-control-sm" required="">
                                 @error('confirm-password')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -115,8 +119,9 @@
                             </label>
                             <select id="select-unit" name="select_unit" placeholder="Pilih Unit" autocomplete="off">
                                 <option value="">Pilih Unit</option>
-                                @foreach ($unit as $index => $u)
-                                    <option value="{{ $index + 1 }}">{{ $u }}</option>
+                                @foreach ($unit_list as $u)
+                                    <option value="{{ $u->id }}" {{ isset($user) && $user->unit_id == $u->id ? 'selected' : '' }}>
+                                        {{ $u->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -129,11 +134,12 @@
                             <select id="select-user" name="select_user" placeholder="Pilih Tipe User"
                                 autocomplete="off">
                                 <option value="">Pilih Tipe User</option>
-                                @foreach ($user_type as $index => $u)
+                                @foreach ($user_type_list as $index => $u)
                                     @php
                                         $formatUserType = ucwords(str_replace('-', ' ', $u));
+                                        $selectedUserType = isset($user) && $selected_user_type == $u ? 'selected' : '';
                                     @endphp
-                                    <option value="{{ $u }}" @if (isset($user) && $user->user_type == $u) selected @endif>
+                                    <option value="{{ $u }}" {{ $selectedUserType }}>
                                         {{ $formatUserType }}</option>
                                 @endforeach
                             </select>
@@ -147,7 +153,7 @@
                                 Upload Tanda Tangan
                                 <span class="text-danger">*</span>
                             </label>
-                            <input type="file" class="dropify" data-max-file-size="2M" name="signature"
+                            <input id="signature" type="file" class="dropify" data-max-file-size="2M" name="signature"
                                 data-height="75" />
                             @error('signature')
                                 <div class="text-danger">{{ $message }}</div>
@@ -163,13 +169,16 @@
 @endsection
 
 @push('script')
+    <!-- TomSelect -->
+    <script src="{{ asset('src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
+    <script src="{{ asset('src/plugins/src/tomSelect/custom-tom-select.js') }}"></script>
+
+    <!-- Dropify -->
+    <script src="{{ asset('src/assets/js/dropify/dropify.js') }}"></script>
+    <script src="{{ asset('src/assets/js/dropify/dropify.min.js') }}"></script>
+
     <script>
-        var form = document.getElementById('form-submit');
-        var button = document.getElementById('btn-submit');
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
-            form.submit();
-        });
+        feather.replace();
 
         new TomSelect("#select-unit", {
             create: true,
@@ -186,5 +195,13 @@
                 'error': 'Ooops, something wrong happended.'
             }
         });
+
+        var form = document.getElementById('form-submit');
+        var button = document.getElementById('btn-submit');
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            form.submit();
+        });
+
     </script>
 @endpush

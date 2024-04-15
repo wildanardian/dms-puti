@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use OpenSpout\Common\Entity\Row;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -20,10 +21,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $users = DB::table('users')
-                ->leftJoin('units', 'users.unit_id', '=', 'units.id')
-                ->select('users.id', 'users.name', 'units.name as unit', 'users.created_at')
-                ->whereNull('users.deleted_at');
+
+            $users = User::leftJoin('units', 'users.unit_id', '=', 'units.id')
+                ->select('users.id', 'users.name', 'units.name as unit', 'users.created_at');
 
             return DataTables::of($users)->addIndexColumn()->make(true);
         }
@@ -35,7 +35,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $unit = Unit::all()->pluck('name');
+        $unit = Unit::all();
         $user_type = Role::all()->pluck('name');
 
         return view('users.form', compact('unit', 'user_type'));
@@ -81,11 +81,7 @@ class UserController extends Controller
 
         if ($request->select_unit != null) {
             $unit = Unit::where('id', $request->select_unit)->first();
-
-            UserUnit::create([
-                'user_id' => $user->id,
-                'unit_id' => $unit->id,
-            ]);
+            $user->unit_id = $unit->id;
         }
 
         if ($user) {
@@ -111,9 +107,11 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::findOrFail($id);
-        $unit = Unit::all()->pluck('name');
-        $user_type = Role::all()->pluck('name');
-        return view('users.form', compact('user', 'unit', 'user_type'));
+        $selected_user_type = $user->getRoleNames()->first();
+        $unit_list = Unit::all();
+        $user_type_list = Role::all()->pluck('name');
+
+        return view('users.form', compact('user', 'selected_user_type', 'unit_list', 'user_type_list'));
     }
 
     /**
@@ -153,11 +151,7 @@ class UserController extends Controller
 
         if ($request->select_unit != null) {
             $unit = Unit::where('id', $request->select_unit)->first();
-
-            UserUnit::create([
-                'user_id' => $user->id,
-                'unit_id' => $unit->id,
-            ]);
+            $user->unit_id = $unit->id;
         }
 
         if ($user->save()) {

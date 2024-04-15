@@ -2,11 +2,7 @@
 
 @section('button')
     <a href="{{ route('units.create') }}" class="btn btn-danger">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
+        <i data-feather="plus" class="me-2"></i>
         <span>Buat Unit</span>
     </a>
 @endsection
@@ -24,10 +20,6 @@
                                 <th class="sorting_asc" tabindex="0" aria-controls="table" rowspan="1" colspan="1"
                                     aria-sort="ascending" aria-label="Name: activate to sort column descending"
                                     style="width: 129px;">Nama
-                                </th>
-                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1"
-                                    aria-label="Position: activate to sort column ascending" style="width: 125px;">Tanggal
-                                    Dibuat
                                 </th>
                                 <th class="no-content sorting" tabindex="0" aria-controls="table" rowspan="1"
                                     colspan="1" aria-label="Action: activate to sort column ascending"
@@ -48,7 +40,7 @@
 @push('script')
     <script>
         $(document).ready(function() {
-            $('#table_unit').DataTable({
+            var table = $('#table_unit').DataTable({
                 "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
                     "<'table-responsive'tr>" +
                     "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
@@ -64,7 +56,10 @@
                 },
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('units.index') }}",
+                ajax: {
+                    url: "{{ route('units.index') }}",
+                    type: 'GET'
+                },
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -77,38 +72,20 @@
                         name: 'name'
                     },
                     {
-                        data: 'created_at',
-                        name: 'created_at',
-                        render: function(data) {
-                            var date = new Date(data);
-                            var day = date.getDate();
-                            var monthIndex = date.getMonth();
-                            var year = date.getFullYear();
-
-                            var monthNames = [
-                                "Jan", "Feb", "Mar",
-                                "Apr", "May", "Jun", "Jul",
-                                "Aug", "Sep", "Oct",
-                                "Nov", "Dec"
-                            ];
-
-                            return day + '/' + monthNames[monthIndex] + '/' + year;
-                        }
-                    },
-                    {
                         data: 'id',
                         className: 'text-center',
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row, meta) {
                             return `
-                                <div class="d-flex gap-2 align-items-center justify-content-center">
-                                    <a href="{{ route('units.index') }}/${data}/edit" class="btn btn-warning btn-sm">Ubah</a>
-                                    <form action="{{ route('units.destroy', ':unit') }}/" method="POST" id="delete_form_${data}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <a class="btn btn-danger btn-sm" onclick="deleteData(${data})">Hapus</a>
-                                    </form>
+                                <div class="d-inline dropdown">
+                                    <button class="btn btn-sm btn-primary rounded-circle dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i data-feather="more-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="{{ route('units.index') }}/${data}/edit">Ubah</a></li>
+                                        <li><a class="dropdown-item delete-item" href="#" data-id="${data}">Hapus</a></li>
+                                    </ul>
                                 </div>
                             `;
                         }
@@ -122,26 +99,40 @@
                     sSearch: '',
                     lengthMenu: 'Result : _MENU_',
                 },
-            });
-        });
-
-        function deleteData(id) {
-            var form = $('#delete_form_' + id);
-            var action = form.attr('action');
-            action = action.replace(':unit', id);
-            form.attr('action', action);
-
-            Swal.fire({
-                title: "Apakah anda yakin?",
-                text: "Setelah dihapus, Anda tidak akan dapat memulihkan data tersebut!",
-                icon: "warning",
-                showCancelButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                    $('#table_unit').DataTable().ajax.reload();
+                "initComplete": function() {
+                    feather.replace();
                 }
             });
-        }
+
+            $(document).on('click', '.delete-item', function(e) {
+                var id = $(this).data('id');
+
+                Swal.fire({
+                    title: "Apakah anda yakin?",
+                    text: "Setelah dihapus, Anda tidak akan dapat memulihkan data tersebut!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Hapus",
+                    cancelButtonText: "Batal",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ route('units.destroy', ':unit') }}".replace(':unit',
+                                id),
+                            type: 'POST',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                _method: 'DELETE'
+                            },
+                            success: function(response) {
+                                window.location.reload();
+                                table.ajax.reload();
+                            },
+                        })
+                    }
+                });
+            });
+
+        });
     </script>
 @endpush

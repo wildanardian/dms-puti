@@ -24,10 +24,45 @@ class UnitSeeder extends Seeder
             'Urusan Infrastruktur Jaringan TI'
         ];
 
-        foreach ($units as $unit) {
-            Unit::create([
-                'name' => $unit
-            ]);
-        }
+        $unit = Unit::create([
+            'name' => 'Direktorat Pusat Teknologi Informasi',
+            'parent_id' => null
+        ]);
+
+        $unit2 = Unit::create([
+            'name' => 'Bagian Riset dan Layanan TI',
+            'parent_id' => $unit->id
+        ]);
+
+        $unit3 = Unit::create([
+            'name' => 'Urusan Manajemen Mutu',
+            'parent_id' => $unit2->id
+        ]);
+
+        $unit3 = Unit::create([
+            'name' => 'Urusan Pengelolaan Konten dan Sumber Daya TI',
+            'parent_id' => $unit2->id
+        ]);
+
+        $unit3 = Unit::create([
+            'name' => 'Urusan Pengguna Layanan',
+            'parent_id' => $unit2->id
+        ]);
+
+        $unit3 = Unit::create([
+            'name' => 'Urusan Riset TI',
+            'parent_id' => $unit2->id
+        ]);
+
+        $unit2 = Unit::create([
+            'name' => 'Bagian Infrastruktur TI',
+            'parent_id' => $unit->id
+        ]);
+
+        $unit3 = Unit::create([
+            'name' => 'Urusan Infrastruktur Jaringan TI',
+            'parent_id' => $unit2->id
+        ]);
+
     }
 }
