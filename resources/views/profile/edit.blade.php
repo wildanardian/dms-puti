@@ -6,6 +6,16 @@
     </ol>
 @endsection
 
+@section('button')
+    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+        Ubah Password
+    </button>
+    <a href="{{ route('units.create') }}" class="btn btn-danger ms-2">
+        <i class="fa fa-plus"></i>
+        <span>Simpan</span>
+    </a>
+@endsection
+
 @section('content')
     <div class="statbox widget box box-shadow ">
         <div class="widget-content widget-content-area p-4 pb-5">
@@ -36,7 +46,7 @@
                             <span class="text-danger">*</span>
                         </label>
                         <input type="username" name="username" id="username" placeholder="Username yang digunakan"
-                            class="form-control form-control-sm" required="" disabled
+                            class="form-control form-control-sm" required=""
                             value="{{ isset($user) ? $user->username : old('username') }}">
                         @error('username')
                             <div class="text-danger">{{ $message }}</div>
@@ -59,16 +69,6 @@
                 </div>
             </div>
 
-            <div class="row mt-2 mb-2 mt-4">
-                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h6 class="text-danger fw-bold">Ubah Password</h6>
-                </div>
-            </div>
-
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                Ubah Password
-            </button>
-
             <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog"
                 aria-labelledby="changePasswordModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -83,9 +83,12 @@
                             @csrf
                             <div class="modal-body">
                                 <div class="form-group mb-3">
+                                    <label for="old_password">
+                                        Password Lama
+                                    </label>
                                     <div class="input-group">
                                         <span class="input-group-text">
-                                            <i data-feather="lock"></i>
+                                            <i class="fa fa-lock"></i>
                                         </span>
                                         <input type="password" name="old_password" class="form-control" id="old_password"
                                             placeholder="Password Lama" aria-label="old_password">
@@ -93,9 +96,12 @@
                                     <div><span class="text-danger" id="old_password_error"></span></div>
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label for="old_password">
+                                        Password Baru
+                                    </label>
                                     <div class="input-group">
                                         <span class="input-group-text">
-                                            <i data-feather="lock"></i>
+                                            <i class="fa fa-lock"></i>
                                         </span>
                                         <input type="password" name="new_password" class="form-control" id="new_password"
                                             placeholder="Password Baru" aria-label="new_password">
@@ -103,9 +109,12 @@
                                     <div><span class="text-danger" id="new_password_error"></span></div>
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label for="old_password">
+                                        Konfirmasi Password Baru
+                                    </label>
                                     <div class="input-group">
                                         <span class="input-group-text">
-                                            <i data-feather="lock"></i>
+                                            <i class="fa fa-lock"></i>
                                         </span>
                                         <input type="password" name="confirm_password" class="form-control"
                                             id="confirm_password" placeholder="Konfirmasi Password Baru"
@@ -137,9 +146,15 @@
         }
 
         $(document).ready(function() {
-            feather.replace();
             $('#changePasswordButton').click(function() {
                 $('#changePasswordModal').modal('show');
+            });
+
+            $('#changePasswordModal').on('hidden.bs.modal', function() {
+                $('#old_password_error').text('');
+                $('#new_password_error').text('');
+                $('#confirm_password_error').text('');
+                $('#error_message').text('');
             });
 
             $('#form-submit').submit(function(event) {
@@ -172,17 +187,17 @@
                                 $('#' + key + '_error').text(value);
                                 $('#' + key).val('');
                             });
+                            if (key === 'new_password') {
+                                $('#confirm_password').val('');
+                            }
+                            if (key === 'confirm_password') {
+                                $('#new_password').val('');
+                            }
                         }
                     },
                 });
             });
 
-            $('#changePasswordModal').on('hidden.bs.modal', function() {
-                $('#old_password_error').text('');
-                $('#new_password_error').text('');
-                $('#confirm_password_error').text('');
-                $('#error_message').text('');
-            });
         });
     </script>
 @endpush

@@ -10,8 +10,15 @@
     <link href="{{ asset('src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 
+@section('breadcrumb')
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Users</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit User</li>
+    </ol>
+@endsection
+
 @section('button')
-    <button class="btn btn-danger" type="submit" id="btn-submit">
+    <button class="btn text-white" type="submit" id="btn-submit" style="background-color: #9f1521">
         <i data-feather="save" class="me-2"></i>
         <span>Simpan</span>
     </button>

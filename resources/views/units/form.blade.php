@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('button')
-    <button class="btn btn-danger" type="submit" id="btn-submit">
+    <button class="btn text-white" type="submit" id="btn-submit" style="background-color: #9f1521">
         <i data-feather="save" class="me-2"></i>
         <span>Simpan</span>
     </button>

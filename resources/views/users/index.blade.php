@@ -13,8 +13,8 @@
 @endsection
 
 @section('button')
-    <a href="{{ route('users.create') }}" class="btn btn-danger d-flex align-items-center">
-        <i data-feather="plus" class="me-2"></i>
+    <a href="{{ route('users.create') }}" class="btn d-flex align-items-center text-white" style="background-color: #9f1521">
+        <i class="fa-solid fa-plus fa-lg me-2"></i>
         <span>Buat User</span>
     </a>
 @endsection
@@ -101,11 +101,11 @@
                             return `
                                 <div class="d-inline dropdown">
                                     <button class="btn btn-sm btn-primary rounded-circle dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i data-feather="more-vertical"></i>
+                                        <i class="fa-solid fa-ellipsis-vertical fa-xl"></i>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li><a class="dropdown-item" href="{{ route('users.index') }}/${data}/edit">Ubah</a></li>
-                                        <li><a class="dropdown-item delete-item" href="#" data-id="${data}">Hapus</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('users.index') }}/${data}/edit"><i class="fa-solid fa-pen-to-square me-2"></i>Ubah</a></li>
+                                        <li><a class="dropdown-item delete-item" href="#" data-id="${data}"><i class="fa-solid fa-trash me-2" style="color: #e7515a"></i>Hapus</a></li>
                                     </ul>
                                 </div>
                             `;
@@ -120,9 +120,6 @@
                     sSearch: '',
                     lengthMenu: 'Result : _MENU_',
                 },
-                "initComplete": function() {
-                    feather.replace();
-                }
             });
 
             $(document).on('click', '.delete-item', function(e) {

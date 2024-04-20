@@ -35,10 +35,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        $unit = Unit::all();
-        $user_type = Role::all()->pluck('name');
+        $unit_list = Unit::all();
+        $user_type_list = Role::all()->pluck('name');
 
-        return view('users.form', compact('unit', 'user_type'));
+        return view('users.form', compact('unit_list', 'user_type_list'));
     }
 
     /**
