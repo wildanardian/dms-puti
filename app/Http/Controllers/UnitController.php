@@ -110,4 +110,11 @@ class UnitController extends Controller
             return back();
         }
     }
+
+    public function getUnits()
+    {
+        $units = Unit::all();
+        return response()->json(['units' => $units]);
+    }
+
 }

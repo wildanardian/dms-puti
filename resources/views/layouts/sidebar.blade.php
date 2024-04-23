@@ -271,7 +271,7 @@
 
                 <li class="menu">
                     <a href="#users" data-bs-toggle="collapse"
-                        aria-expanded="{{ Request::is('users*') || Request::is('units*') ? 'true' : 'false' }}"
+                        aria-expanded="{{ Request::is('users*') || Request::is('units*') || Request::is('document-types*') ? 'true' : 'false' }}"
                         class="dropdown-toggle">
                         <div class="heading">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -292,7 +292,7 @@
                             </svg>
                         </div>
                     </a>
-                    <ul class="collapse submenu list-unstyled @if (request()->is('users*') || request()->is('units*')) show @endif"
+                    <ul class="collapse submenu list-unstyled @if (request()->is('users*') || request()->is('units*') || request()->is('document-types*')) show @endif"
                         id="users" data-bs-parent="#accordionExample">
                         <li class="@if (request()->is('users*')) active @endif">
                             <a href="{{ route('users.index') }}" aria-expanded="false"
@@ -307,6 +307,14 @@
                                 class="dropdown-toggle dropdown-toggle-menu">
                                 <div class="">
                                     <span>Kelola Unit</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="@if (request()->is('document-types*')) active @endif">
+                            <a href="{{ route('document-types.index') }}" aria-expanded="false"
+                                class="dropdown-toggle dropdown-toggle-menu">
+                                <div class="">
+                                    <span>Kelola Tipe Dokumen</span>
                                 </div>
                             </a>
                         </li>

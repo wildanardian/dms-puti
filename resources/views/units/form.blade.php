@@ -2,7 +2,7 @@
 
 @section('button')
     <button class="btn text-white" type="submit" id="btn-submit" style="background-color: #9f1521">
-        <i data-feather="save" class="me-2"></i>
+        <i class="fa fa-save me-2"></i>
         <span>Simpan</span>
     </button>
 @endsection

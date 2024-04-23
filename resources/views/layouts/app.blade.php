@@ -31,8 +31,6 @@
         type="text/css">
 
     @stack('style')
-
-    <script src="https://unpkg.com/feather-icons"></script>
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 
     <style>
@@ -159,8 +157,6 @@
     <script src="{{ asset('src/plugins/src/waves/waves.min.js') }}"></script>
 
     <script src="{{ asset('src/plugins/src/table/datatable/datatables.js') }}"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
     @stack('script')
 

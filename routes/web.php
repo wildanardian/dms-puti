@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,10 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('units', UnitController::class);
     Route::resource('users', UserController::class);
+    Route::resource('document-types', DocumentTypeController::class);
+
+    Route::get('/unit-list', [UnitController::class, 'getUnits'])->name('units.unit-list');
+    Route::get('/user-type', [UserController::class, 'getUserType'])->name('user.user-type');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'changePassword'])->name('profile.change-password');

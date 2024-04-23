@@ -21,10 +21,8 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-
             $users = User::leftJoin('units', 'users.unit_id', '=', 'units.id')
                 ->select('users.id', 'users.name', 'units.name as unit', 'users.created_at');
-
             return DataTables::of($users)->addIndexColumn()->make(true);
         }
         return view('users.index');
@@ -33,12 +31,16 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $unit_list = Unit::all();
         $user_type_list = Role::all()->pluck('name');
 
-        return view('users.form', compact('unit_list', 'user_type_list'));
+        if ($request->ajax()) {
+            return response()->json(['unit_list' => $unit_list, 'user_type_list' => $user_type_list]);
+        }
+
+        return view('users.form');
     }
 
     /**
@@ -177,5 +179,10 @@ class UserController extends Controller
             toastr()->error('Failed to delete user.');
             return back();
         }
+    }
+
+    public function getUserType(){
+        $user_type_list = Role::all()->pluck('name');
+        return response()->json(['user_type_list' => $user_type_list]);
     }
 }

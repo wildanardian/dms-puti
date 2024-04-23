@@ -13,17 +13,6 @@ class UnitSeeder extends Seeder
      */
     public function run(): void
     {
-        $units = [
-            'Direktorat Pusat Teknologi Informasi',
-            'Bagian Riset dan Layanan TI',
-            'Urusan Manajemen Mutu',
-            'Urusan Pengelolaan Konten dan Sumber Daya TI',
-            'Urusan Pengguna Layanan',
-            'Urusan Riset TI',
-            'Bagian Infrastruktur TI',
-            'Urusan Infrastruktur Jaringan TI'
-        ];
-
         $unit = Unit::create([
             'name' => 'Direktorat Pusat Teknologi Informasi',
             'parent_id' => null

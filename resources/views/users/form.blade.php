@@ -19,7 +19,7 @@
 
 @section('button')
     <button class="btn text-white" type="submit" id="btn-submit" style="background-color: #9f1521">
-        <i data-feather="save" class="me-2"></i>
+        <i class="fa fa-save me-2"></i>
         <span>Simpan</span>
     </button>
 @endsection
@@ -124,12 +124,15 @@
                             <label for="select-unit">
                                 Unit
                             </label>
-                            <select id="select-unit" name="select_unit" placeholder="Pilih Unit" autocomplete="off">
+                            {{-- <select id="select-unit" name="select_unit" placeholder="Pilih Unit" autocomplete="off">
                                 <option value="">Pilih Unit</option>
                                 @foreach ($unit_list as $u)
                                     <option value="{{ $u->id }}" {{ isset($user) && $user->unit_id == $u->id ? 'selected' : '' }}>
                                         {{ $u->name }}</option>
                                 @endforeach
+                            </select> --}}
+                            <select id="select_unit" name="select_unit" placeholder="Pilih Unit" autocomplete="off">
+                                <option value="">Pilih Unit</option>
                             </select>
                         </div>
                     </div>
@@ -138,7 +141,7 @@
                             <label for="select-user">
                                 Tipe User
                             </label>
-                            <select id="select-user" name="select_user" placeholder="Pilih Tipe User"
+                            {{-- <select id="select-user" name="select_user" placeholder="Pilih Tipe User"
                                 autocomplete="off">
                                 <option value="">Pilih Tipe User</option>
                                 @foreach ($user_type_list as $index => $u)
@@ -149,6 +152,10 @@
                                     <option value="{{ $u }}" {{ $selectedUserType }}>
                                         {{ $formatUserType }}</option>
                                 @endforeach
+                            </select> --}}
+                            <select id="select-user" name="select_user" placeholder="Pilih Tipe User"
+                                autocomplete="off">
+                                <option value="">Pilih Tipe User</option>
                             </select>
                         </div>
                     </div>
@@ -160,8 +167,8 @@
                                 Upload Tanda Tangan
                                 <span class="text-danger">*</span>
                             </label>
-                            <input id="signature" type="file" class="dropify" data-max-file-size="2M" name="signature"
-                                data-height="75" />
+                            <input id="signature" type="file" class="dropify" data-max-file-size="2M"
+                                name="signature" data-height="75" />
                             @error('signature')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -185,8 +192,6 @@
     <script src="{{ asset('src/assets/js/dropify/dropify.min.js') }}"></script>
 
     <script>
-        feather.replace();
-
         new TomSelect("#select-unit", {
             create: true,
         });
@@ -203,12 +208,28 @@
             }
         });
 
+        //fetch unit list data using ajax
+        $(document).ready(function() {
+            $.ajax({
+                url: "{{ route('units.unit-list') }}",
+                type: "GET",
+                success: function(response) {
+                    $('#select_unit').empty();
+                    $('#select_unit').append('<option value="">Pilih Unit</option>');
+                    if (response) {
+                        $.each(response, function(key, value) {
+                            $('#select_unit').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                }
+            });
+        });
+
         var form = document.getElementById('form-submit');
         var button = document.getElementById('btn-submit');
         button.addEventListener('click', function(event) {
             event.preventDefault();
             form.submit();
         });
-
     </script>
 @endpush
