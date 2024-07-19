@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @push('style')
+    <!-- Tabs -->
+    <link href="{{ asset('src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('src/assets/css/dark/components/tabs.css') }}" rel="stylesheet" type="text/css" />
+
     <!-- Dropify -->
     <link href="{{ asset('src/assets/css/dropify/dropify.css') }}" rel="stylesheet">
     <link href="{{ asset('src/assets/css/dropify/dropify.min.css') }}" rel="stylesheet">
@@ -27,157 +31,152 @@
 @section('content')
     <div class="statbox widget box box-shadow ">
         <div class="widget-content widget-content-area p-4 pb-5">
-            <div class="row mt-2 mb-4">
-                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h6 class="text-danger fw-bold">Informasi Umum</h6>
-                </div>
-            </div>
-            <form
-                action="{{ Route::currentRouteName() == 'users.create' ? route('users.store') : route('users.update', $user->id) }}"
-                method="POST" id="form-submit" enctype="multipart/form-data">
-                @csrf
-                @if (Route::currentRouteName() == 'users.edit')
-                    @method('PUT')
-                @endif
-                <div class="row">
-                    <div class="col-lg-4 col-12 ">
-                        <div class="form-group">
-                            <label for="t-text" class="form-label">
-                                Name
-                                <span class="text-danger">*</span>
-                            </label>
-                            <input type="text" name="name" id="name" placeholder="Nama pengguna"
-                                class="form-control form-control-sm" required=""
-                                value="{{ isset($user) ? $user->name : old('name') }}">
-                            @error('name')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-12 ">
-                        <div class="form-group">
-                            <label for="t-text">
-                                Username
-                                <span class="text-danger">*</span>
-                            </label>
-                            <input type="text" name="username" id="username" placeholder="Username yang digunakan"
-                                class="form-control form-control-sm" required=""
-                                value="{{ isset($user) ? $user->username : old('username') }}">
-                            @error('username')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-12 ">
-                        <div class="form-group">
-                            <label for="t-text">
-                                Email
-                                <span class="text-danger">*</span>
-                            </label>
-                            <input type="email" name="email" id="email"
-                                placeholder="Masukan email, ex: budi@gmail.com" class="form-control form-control-sm"
-                                required="" value="{{ isset($user) ? $user->email : old('email') }}">
-                            @error('email')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                @if (Route::currentRouteName() != 'users.edit')
-                    <div class="row mt-4">
-                        <div class="col-lg-6 col-12 ">
-                            <div class="form-group">
-                                <label for="t-text">
-                                    Password
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="password" name="password" id="password" placeholder="Masukkan Password"
-                                    class="form-control form-control-sm" required="">
-                                @error('password')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
+            <div class="simple-tab">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+                            type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Informasi
+                            Umum</button>
+                    </li>
+                </ul>
+                <div class="tab-content mt-4" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
+                        tabindex="0">
+                        <form
+                            action="{{ Route::currentRouteName() == 'users.create' ? route('users.store') : route('users.update', $user->id) }}"
+                            method="POST" id="form-submit" enctype="multipart/form-data">
+                            @csrf
+                            @if (Route::currentRouteName() == 'users.edit')
+                                @method('PUT')
+                            @endif
+                            <div class="row">
+                                <div class="col-lg-4 col-12 ">
+                                    <div class="form-group">
+                                        <label for="t-text" class="form-label">
+                                            Name
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" name="name" id="name" placeholder="Nama pengguna"
+                                            class="form-control form-control-sm" required=""
+                                            value="{{ isset($user) ? $user->name : old('name') }}">
+                                        @error('name')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12 ">
+                                    <div class="form-group">
+                                        <label for="t-text">
+                                            Username
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" name="username" id="username"
+                                            placeholder="Username yang digunakan" class="form-control form-control-sm"
+                                            required="" value="{{ isset($user) ? $user->username : old('username') }}">
+                                        @error('username')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12 ">
+                                    <div class="form-group">
+                                        <label for="t-text">
+                                            Email
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="email" name="email" id="email"
+                                            placeholder="Masukan email, ex: budi@gmail.com"
+                                            class="form-control form-control-sm" required=""
+                                            value="{{ isset($user) ? $user->email : old('email') }}">
+                                        @error('email')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 col-12 ">
-                            <div class="form-group">
-                                <label for="t-text">
-                                    Password Confirmation
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="password" name="confirm-password" id="confirm-password"
-                                    placeholder="Konfirmasi Password" class="form-control form-control-sm" required="">
-                                @error('confirm-password')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                            @if (Route::currentRouteName() != 'users.edit')
+                                <div class="row mt-4">
+                                    <div class="col-lg-6 col-12 ">
+                                        <div class="form-group">
+                                            <label for="t-text">
+                                                Password
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="password" name="password" id="password"
+                                                placeholder="Masukkan Password" class="form-control form-control-sm"
+                                                required="">
+                                            @error('password')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-12 ">
+                                        <div class="form-group">
+                                            <label for="t-text">
+                                                Password Confirmation
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="password" name="confirm-password" id="confirm-password"
+                                                placeholder="Konfirmasi Password" class="form-control form-control-sm"
+                                                required="">
+                                            @error('confirm-password')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                            <div class="row mt-5">
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                    <h5>Informasi Tipe Pengguna</h5>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                @endif
-                <div class="row mt-5">
-                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h5>Informasi Tipe Pengguna</h5>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-6 col-12">
-                        <div class="form-group">
-                            <label for="select-unit">
-                                Unit
-                            </label>
-                            {{-- <select id="select-unit" name="select_unit" placeholder="Pilih Unit" autocomplete="off">
-                                <option value="">Pilih Unit</option>
-                                @foreach ($unit_list as $u)
-                                    <option value="{{ $u->id }}" {{ isset($user) && $user->unit_id == $u->id ? 'selected' : '' }}>
-                                        {{ $u->name }}</option>
-                                @endforeach
-                            </select> --}}
-                            <select id="select_unit" name="select_unit" placeholder="Pilih Unit" autocomplete="off">
-                                <option value="">Pilih Unit</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="form-group">
-                            <label for="select-user">
-                                Tipe User
-                            </label>
-                            {{-- <select id="select-user" name="select_user" placeholder="Pilih Tipe User"
-                                autocomplete="off">
-                                <option value="">Pilih Tipe User</option>
-                                @foreach ($user_type_list as $index => $u)
-                                    @php
-                                        $formatUserType = ucwords(str_replace('-', ' ', $u));
-                                        $selectedUserType = isset($user) && $selected_user_type == $u ? 'selected' : '';
-                                    @endphp
-                                    <option value="{{ $u }}" {{ $selectedUserType }}>
-                                        {{ $formatUserType }}</option>
-                                @endforeach
-                            </select> --}}
-                            <select id="select-user" name="select_user" placeholder="Pilih Tipe User"
-                                autocomplete="off">
-                                <option value="">Pilih Tipe User</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-md-12 col-12">
-                        <div class="form-group">
-                            <label for="signature">
-                                Upload Tanda Tangan
-                                <span class="text-danger">*</span>
-                            </label>
-                            <input id="signature" type="file" class="dropify" data-max-file-size="2M"
-                                name="signature" data-height="75" />
-                            @error('signature')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
+                            <div class="row mt-3">
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="select-unit">
+                                            Unit
+                                        </label>
+                                        <select id="select_unit" name="select_unit" placeholder="Pilih Unit"
+                                            autocomplete="off">
+                                            <option value="">Pilih Unit</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="select-user">
+                                            Tipe User
+                                        </label>
+                                        <select id="select-user" name="select_user" placeholder="Pilih Tipe User"
+                                            autocomplete="off">
+                                            <option value="">Pilih Tipe User</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-12 col-12">
+                                    <div class="form-group">
+                                        <label for="signature">
+                                            Upload Tanda Tangan
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input id="signature" type="file" class="dropify" data-max-file-size="2M"
+                                            name="signature" data-height="100" data-allowed-file-extensions="jpg png jpeg"/>
+                                        @error('signature')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
 
-                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input id="submit-form" type="submit" hidden>
+                        </form>
                     </div>
                 </div>
-                <input id="submit-form" type="submit" hidden>
-            </form>
+
+            </div>
         </div>
     </div>
 @endsection
@@ -192,35 +191,54 @@
     <script src="{{ asset('src/assets/js/dropify/dropify.min.js') }}"></script>
 
     <script>
-        new TomSelect("#select-unit", {
-            create: true,
-        });
-        new TomSelect("#select-user", {
-            create: true,
-        });
-
         var drEvent = $('.dropify').dropify({
             messages: {
-                'default': 'Drag and drop a file here or click',
+                'default': 'Drag and drop an image here or click',
                 'replace': 'Drag and drop or click to replace',
                 'remove': 'Remove',
                 'error': 'Ooops, something wrong happended.'
             }
         });
 
-        //fetch unit list data using ajax
+        function ucwords(str) {
+            return str.toLowerCase().replace(/\b(\w)/g, function(s) {
+                return s.toUpperCase();
+            });
+        }
+
         $(document).ready(function() {
             $.ajax({
-                url: "{{ route('units.unit-list') }}",
+                url: "{{ route('users.create') }}",
                 type: "GET",
                 success: function(response) {
-                    $('#select_unit').empty();
-                    $('#select_unit').append('<option value="">Pilih Unit</option>');
-                    if (response) {
-                        $.each(response, function(key, value) {
-                            $('#select_unit').append('<option value="' + value.id + '">' + value.name + '</option>');
-                        });
-                    }
+
+                    new TomSelect('#select_unit', {
+                        options: response.unit_list,
+                        valueField: 'id',
+                        labelField: 'name',
+                        searchField: ['name'],
+                        placeholder: 'Pilih Unit',
+                        create: false,
+                        preload: true,
+                    });
+
+                    var formattedUserTypeList = response.user_type_list.map(function(userType) {
+                        return {
+                            id: userType,
+                            name: ucwords(userType.replace(/-/g,
+                                ' ')), // Format name as per your Blade code
+                        };
+                    });
+
+                    new TomSelect('#select-user', {
+                        options: formattedUserTypeList,
+                        valueField: 'id',
+                        labelField: 'name',
+                        searchField: ['name'],
+                        placeholder: 'Pilih Tipe User',
+                        create: false,
+                        preload: true,
+                    });
                 }
             });
         });

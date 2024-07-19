@@ -155,6 +155,7 @@
 
     <script src="{{ asset('modern-light-menu/app.js') }}"></script>
     <script src="{{ asset('src/plugins/src/waves/waves.min.js') }}"></script>
+    <script src="{{ asset('src/assets/js/dashboard/dash_1.js') }}"></script>
 
     <script src="{{ asset('src/plugins/src/table/datatable/datatables.js') }}"></script>
 

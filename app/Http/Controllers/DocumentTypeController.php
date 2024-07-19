@@ -34,7 +34,21 @@ class DocumentTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+        ]);
+
+        $documentType = DocumentType::create([
+            'name' => $request->name,
+        ]);
+
+        if($documentType) {
+            toastr()->success('Document type created successfully.');
+            return redirect()->route('document-types.index');
+        }else {
+            toastr()->error('Failed to create document type.');
+            return back()->withInput();
+        }
     }
 
     /**
@@ -50,7 +64,8 @@ class DocumentTypeController extends Controller
      */
     public function edit(DocumentType $documentType)
     {
-        //
+        $documentType = DocumentType::find($documentType->id);
+        return view('document_type.form', compact('documentType'));
     }
 
     /**
@@ -58,7 +73,21 @@ class DocumentTypeController extends Controller
      */
     public function update(Request $request, DocumentType $documentType)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+        ]);
+
+        $documentType = DocumentType::find($documentType->id);
+        $documentType->name = $request->name;
+        $documentType->save();
+
+        if($documentType) {
+            toastr()->success('Document type updated successfully.');
+            return redirect()->route('document-types.index');
+        }else {
+            toastr()->error('Failed to update document type.');
+            return back()->withInput();
+        }
     }
 
     /**
@@ -66,6 +95,15 @@ class DocumentTypeController extends Controller
      */
     public function destroy(DocumentType $documentType)
     {
-        //
+        $documentType = DocumentType::find($documentType->id);
+        $documentType->delete();
+
+        if($documentType) {
+            toastr()->success('Document type deleted successfully.');
+            return redirect()->route('document-types.index');
+        }else {
+            toastr()->error('Failed to delete document type.');
+            return back();
+        }
     }
 }

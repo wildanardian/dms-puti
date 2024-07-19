@@ -26,12 +26,13 @@
   height: 20px;
 }
 .nav.nav-tabs li.nav-item button.nav-link.active {
-  border-bottom: 1.6px solid #4361ee;
-  color: #4361ee;
+  /* border-bottom: 1.6px solid #4361ee; */
+  border-bottom: 1.6px solid #9f1521;
+  color: #9f1521;
   font-weight: 600;
 }
 .nav.nav-tabs li.nav-item button.nav-link.active svg {
-  color: #4361ee;
+  color: #9f1521;
 }
 .nav.nav-tabs li.nav-item button.nav-link:disabled {
   opacity: 0.5;
@@ -47,12 +48,12 @@
   font-weight: 500;
   padding: 8px 14px;
   letter-spacing: 1px;
-  color: #4361ee;
+  color: #9f1521;
 }
 .nav.nav-pills li.nav-item button.nav-link svg {
   vertical-align: text-bottom;
   stroke-width: 1.6;
-  color: #4361ee;
+  color: #9f1521;
   width: 20px;
   height: 20px;
 }
@@ -70,12 +71,12 @@
   font-weight: 500;
   padding: 8px 14px;
   letter-spacing: 1px;
-  color: #4361ee;
+  color: #9f1521;
 }
 .nav.nav-pills[aria-orientation=vertical] button.nav-link svg {
   vertical-align: bottom;
   stroke-width: 1.6;
-  color: #4361ee;
+  color: #9f1521;
   width: 20px;
   height: 20px;
 }

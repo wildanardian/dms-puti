@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('style')
+<link href="{{ asset('src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li class="breadcrumb-item active"><a href="#">Profile</a></li>
@@ -10,8 +14,8 @@
     <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
         Ubah Password
     </button>
-    <a href="{{ route('units.create') }}" class="btn btn-danger ms-2">
-        <i class="fa fa-plus"></i>
+    <a href="{{ route('units.create') }}" class="btn text-white ms-2" style="background-color: #9f1521;">
+        <i class="fa fa-plus me-1"></i>
         <span>Simpan</span>
     </a>
 @endsection
@@ -19,52 +23,63 @@
 @section('content')
     <div class="statbox widget box box-shadow ">
         <div class="widget-content widget-content-area p-4 pb-5">
-            <div class="row mt-2 mb-4">
-                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h6 class="text-danger fw-bold">Informasi Umum</h6>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-12 ">
-                    <div class="form-group">
-                        <label for="t-text" class="form-label">
-                            Name
-                            <span class="text-danger">*</span>
-                        </label>
-                        <input type="text" name="name" id="name" placeholder="Nama pengguna"
-                            class="form-control form-control-sm" required="" disabled
-                            value="{{ isset($user) ? $user->name : old('name') }}">
-                        @error('name')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-lg-4 col-12 ">
-                    <div class="form-group">
-                        <label for="t-text">
-                            Username
-                            <span class="text-danger">*</span>
-                        </label>
-                        <input type="username" name="username" id="username" placeholder="Username yang digunakan"
-                            class="form-control form-control-sm" required=""
-                            value="{{ isset($user) ? $user->username : old('username') }}">
-                        @error('username')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-lg-4 col-12 ">
-                    <div class="form-group">
-                        <label for="t-text">
-                            Email
-                            <span class="text-danger">*</span>
-                        </label>
-                        <input type="email" name="email" id="email" placeholder="Masukan email, ex: budi@gmail.com"
-                            class="form-control form-control-sm" required="" disabled
-                            value="{{ isset($user) ? $user->email : old('email') }}">
-                        @error('email')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
+            <div class="simple-tab">
+
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+                            type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Informasi
+                            Umum</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content mt-4" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
+                        tabindex="0">
+                        <div class="row">
+                            <div class="col-lg-4 col-12 ">
+                                <div class="form-group">
+                                    <label for="t-text" class="form-label">
+                                        Name
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" name="name" id="name" placeholder="Nama pengguna"
+                                        class="form-control form-control-sm" required="" disabled
+                                        value="{{ isset($user) ? $user->name : old('name') }}">
+                                    @error('name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12 ">
+                                <div class="form-group">
+                                    <label for="t-text">
+                                        Username
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="username" name="username" id="username"
+                                        placeholder="Username yang digunakan" class="form-control form-control-sm"
+                                        required="" value="{{ isset($user) ? $user->username : old('username') }}">
+                                    @error('username')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12 ">
+                                <div class="form-group">
+                                    <label for="t-text">
+                                        Email
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="email" name="email" id="email"
+                                        placeholder="Masukan email, ex: budi@gmail.com" class="form-control form-control-sm"
+                                        required="" disabled value="{{ isset($user) ? $user->email : old('email') }}">
+                                    @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -103,8 +118,8 @@
                                         <span class="input-group-text">
                                             <i class="fa fa-lock"></i>
                                         </span>
-                                        <input type="password" name="new_password" class="form-control" id="new_password"
-                                            placeholder="Password Baru" aria-label="new_password">
+                                        <input type="password" name="new_password" class="form-control"
+                                            id="new_password" placeholder="Password Baru" aria-label="new_password">
                                     </div>
                                     <div><span class="text-danger" id="new_password_error"></span></div>
                                 </div>

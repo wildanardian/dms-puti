@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
@@ -26,12 +27,15 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/doc-list', [DocumentController::class, 'getDocuments'])->name('documents.doc-list');
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard/general', [DashboardController::class, 'general'])->name('dashboard.general');
 
     Route::resource('units', UnitController::class);
     Route::resource('users', UserController::class);
     Route::resource('document-types', DocumentTypeController::class);
+    Route::resource('documents', DocumentController::class);
 
     Route::get('/unit-list', [UnitController::class, 'getUnits'])->name('units.unit-list');
     Route::get('/user-type', [UserController::class, 'getUserType'])->name('user.user-type');

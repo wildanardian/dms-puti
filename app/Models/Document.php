@@ -11,8 +11,12 @@ class Document extends Model
     protected $fillable = [
         'nama_dokumen',
         'nama_dokumen_asli',
-        'tipe_dokumen',
         'nomor_dokumen',
-        'pemilik_dokumen'
+        'pemilik_dokumen_id',
+        'tipe_dokumen_id',
     ];
+
+    public function getFileLocation(){
+        return 'public/documents/' . $this->nomor_dokumen . '/' . $this->nama_dokumen;
+    }
 }

@@ -143,10 +143,10 @@
                 </ul>
             </li>
 
-            <li class="menu">
-                <a href="{{ route('dashboard.general') }}" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu @if (request()->is('documents*')) active @endif">
+                <a href="{{ route('documents.create') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
-                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                        <i class="fa-solid fa-arrow-up-from-bracket" @if (request()->is('documents*')) style="color: #fff;" @endif></i>
                         <span>Upload Dokumen</span>
                     </div>
                 </a>

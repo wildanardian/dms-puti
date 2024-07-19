@@ -14,12 +14,8 @@ return new class extends Migration
         Schema::create('document_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->softDeletes();
             $table->timestamps();
-        });
-
-        Schema::table('documents', function (Blueprint $table) {
-            $table->unsignedBigInteger('tipe_dokumen_id')->nullable();
-            $table->foreign('tipe_dokumen_id')->references('id')->on('document_types');
         });
     }
 

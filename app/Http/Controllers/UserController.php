@@ -22,7 +22,9 @@ class UserController extends Controller
     {
         if ($request->ajax()) {
             $users = User::leftJoin('units', 'users.unit_id', '=', 'units.id')
-                ->select('users.id', 'users.name', 'units.name as unit', 'users.created_at');
+                ->select('users.id', 'users.name', 'units.name as unit')
+                ->orderByRaw('CASE WHEN units.name IS NULL THEN 1 ELSE 0 END')
+                ->orderBy('units.name');
             return DataTables::of($users)->addIndexColumn()->make(true);
         }
         return view('users.index');
@@ -68,14 +70,6 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        if ($request->hasFile('signature')) {
-            $signature = $request->file('signature');
-            $signature_name = time() . '.' . $signature->getClientOriginalExtension();
-            $signature->move(public_path('images/signatures'), $signature_name);
-            $user->signature = $signature_name;
-            $user->save();
-        }
-
         if ($request->select_user != null) {
             $role = Role::where('name', $request->select_user)->first();
             $user->assignRole($role);
@@ -85,6 +79,14 @@ class UserController extends Controller
             $unit = Unit::where('id', $request->select_unit)->first();
             $user->unit_id = $unit->id;
         }
+        $signature = $request->file('signature');
+        if ($signature) {
+            $hashedFilename = Hash::make($user->id);
+            $signature->storeAs('public/user/' . $user->id, $hashedFilename);
+            $user->signature = $hashedFilename;
+        }
+
+        $user->save();
 
         if ($user) {
             toastr()->success('User created successfully.');
@@ -138,14 +140,6 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->updated_at = now();
 
-        if ($request->hasFile('signature')) {
-            $signature = $request->file('signature');
-            $signature_name = time() . '.' . $signature->getClientOriginalExtension();
-            $signature->move(public_path('images/signatures'), $signature_name);
-            $user->signature = $signature_name;
-            $user->save();
-        }
-
         if ($request->select_user != null) {
             $role = Role::where('name', $request->select_user)->first();
             $user->assignRole($role);
@@ -154,6 +148,11 @@ class UserController extends Controller
         if ($request->select_unit != null) {
             $unit = Unit::where('id', $request->select_unit)->first();
             $user->unit_id = $unit->id;
+        }
+
+        if ($request->hasFile('signature')) {
+            $signature = $request->file('signature');
+            $signature->storeAs('public/user', $user->id);
         }
 
         if ($user->save()) {
@@ -181,7 +180,8 @@ class UserController extends Controller
         }
     }
 
-    public function getUserType(){
+    public function getUserType()
+    {
         $user_type_list = Role::all()->pluck('name');
         return response()->json(['user_type_list' => $user_type_list]);
     }

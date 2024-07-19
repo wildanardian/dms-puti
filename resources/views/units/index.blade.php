@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@section('breadcrumb')
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Settings</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Kelola Unit</li>
+    </ol>
+@endsection
+
 @section('button')
     <a href="{{ route('units.create') }}" class="btn text-white" style="background-color: #9f1521">
         <i class="fa-solid fa-plus fa-lg me-2"></i>

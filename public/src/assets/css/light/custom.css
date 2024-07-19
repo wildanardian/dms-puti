@@ -1,2 +1,14 @@
 
 /*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJjdXN0b20uc2NzcyJdLCJzb3VyY2VzQ29udGVudCI6WyIiXSwiZmlsZSI6ImN1c3RvbS5jc3MifQ== */
+
+.btn-outline-custom {
+    color : #9f1521;
+    background-color: transparent;
+    border-color: #9f1521;
+}
+
+.btn-outline-custom:hover {
+    color : #fff;
+    background-color: #9f1521;
+    border-color: #9f1521;
+}
