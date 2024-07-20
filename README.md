@@ -1,6 +1,8 @@
+Link Demo Website : ...
+
 # DMS PUTI
 
-This is a guide for installing and setting up the DMS PUTI project on your local machine.
+Ini merupakan panduan untuk melakukan instalasi dan konfigurasi DMS PUTI pada local machine anda
 
 ## Prerequisites
 
@@ -14,13 +16,13 @@ Before you begin, make sure you have the following installed on your system:
 
 ## Installation
 
-1. Clone the repository:
+1. Clone repository ini:
 
     ```bash
     git clone https://github.com/wildanardian/dms-puti.git
     ```
 
-2. Navigate to the project directory:
+2. Navigasi ke direktori tempat anda clone repository ini:
 
     ```bash
     cd dms-puti
@@ -32,63 +34,60 @@ Before you begin, make sure you have the following installed on your system:
     composer install
     ```
 
-4. Create a copy of the `.env.example` file and rename it to `.env`:
+4. Buat salinan dari `.env.example` file dan ganti namanya menjadi `.env`:
 
     ```bash
     cp .env.example .env
     ```
 
-5. Generate an application key:
+5. Generate sebuah application key:
 
     ```bash
     php artisan key:generate
     ```
 
-6. Configure the database connection in the `.env` file:
+6. Konfigurasi koneksi database di dalam `.env` file:
 
     ```dotenv
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
-    DB_DATABASE=your_database_name
+    DB_DATABASE=your_database_name [default: dms-puti]
     DB_USERNAME=your_username
     DB_PASSWORD=your_password
     ```
+7. Buat database baru di phpMyAdmin:
 
-7. Run the database migrations:
-
-    ```bash
-    php artisan migrate
+   ```bash
+    Import :
+   1. Buka phpMyAdmin anda
+   2. Klik new pada database
+   3. Buat database dengan nama dms-puti
     ```
 
-8. Install JavaScript dependencies:
+8. Jalankan migrasi database sekaligus dengan data seed dummy yang dibutuhkan:
+
+    ```bash
+    php artisan migrate --seed
+    ```
+
+9. Install JavaScript dependencies:
 
     ```bash
     npm install
     ```
 
-9. Build the assets:
+10. Build the assets:
 
     ```bash
     npm run dev
     ```
 
-10. Start the development server:
+11. Mulai development server:
 
      ```bash
      php artisan serve
      ```
 
-11. Open your web browser and visit `http://localhost:8000` to see the application.
+11. Buka web browser anda dan kunjungi `http://localhost:8000` untuk melihat aplikasi.
 
-## Usage
-
-...
-
-## Contributing
-
-...
-
-## License
-
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
