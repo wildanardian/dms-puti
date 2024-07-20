@@ -1,29 +1,29 @@
-# Project Name
+# DMS PUTI
 
-This is a guide for installing and setting up the Project Name project on your local machine.
+This is a guide for installing and setting up the DMS PUTI project on your local machine.
 
 ## Prerequisites
 
 Before you begin, make sure you have the following installed on your system:
 
-- PHP (version X.X.X)
-- Composer (version X.X.X)
-- MySQL (version X.X.X)
-- Node.js (version X.X.X)
-- npm (version X.X.X)
+- PHP (version 8.0 or higher)
+- Composer (version 2.0 or higher)
+- MySQL (version 5.7 or higher)
+- Node.js (version 14 or higher)
+- npm (version 6 or higher)
 
 ## Installation
 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/project-name.git
+    git clone https://github.com/wildanardian/dms-puti.git
     ```
 
 2. Navigate to the project directory:
 
     ```bash
-    cd project-name
+    cd dms-puti
     ```
 
 3. Install PHP dependencies:
